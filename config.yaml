@@ -35,21 +35,21 @@ Events Dir: SSA2py/events
 
 Traveltimes:
   Crustals1D:
+    - Filename: SSA2py/Velocity_Models/rigo.vz
+      Elevation: 3
+      Depth: 90
+      Distance: 250
+      Granularity: 1.0
+      VPVS: null
+      Geobox: (21.0828, 37.9269), (23.2251, 37.9269), (23.2251, 38.5310), (38.5310, 21.0828), (37.9269, 21.0828)
+
     - Filename: SSA2py/Velocity_Models/drakatos.vz
       Elevation: 3      
       Depth: 90            
       Distance: 250     
       Granularity: 1.0 
       VPVS: null
-      Geobox: (22.6163,37.6465), (23.3432,36.8208), (24.6418,36.6669), (25.6634,37.5202), (24.9950,38.6259), (23.6373,39.4235), (22.3654,39.2644), (21.8251,39.1394), (22.6163,37.6465)
-
-    - Filename: SSA2py/Velocity_Models/hasslinger.vz
-      Elevation: 3         
-      Depth: 90            
-      Distance: 350        
-      Granularity: 1.0    
-      VPVS: null
-      Geobox: (19.2844,39.7272), (19.3869,39.6062), (20.6181,36.2835), (21.0868,36.3442), (21.6460,36.3353), (22.4078,36.3616), (22.4193,36.8072), (22.3387,37.8602), (22.1245,38.5904), (21.5799,39.8288), (20.8563,41.2116), (19.2330,40.5713), (19.2844,39.7272)
+      Geobox: (22.9340, 37.3352), (24.0106, 37.3352), (24.0106, 38.0076), (22.9340, 38.0076), (22.9340, 37.3352)
 
     - Filename: SSA2py/Velocity_Models/karagianniN.vz
       Elevation: 3
@@ -57,7 +57,7 @@ Traveltimes:
       Distance: 350
       Granularity: 1.0
       VPVS: null
-      Geobox: (27.8207,37.7397), (27.7968,37.8825), (27.6912,39.8097), (26.7934,40.8404), (25.5053,41.0043), (23.8058,40.9247), (22.2572,40.3739), (22.7997,39.5096), (23.6678,38.8283), (24.5977,38.1499), (25.4623,37.5535), (27.8207,37.7397)
+      Geobox: (22.999, 39.719), (25.411, 40.384), (26.026, 39.440), (26.691, 39.453), (26.724, 38.638), (27.147, 37.775), (26.488, 37.339), (25.460, 37.357), (24.614, 37.501), (24.708, 38.207), (22.999, 39.719)
 
     - Filename: SSA2py/Velocity_Models/karagianniS.vz
       Elevation: 3
@@ -65,14 +65,30 @@ Traveltimes:
       Distance: 350
       Granularity: 1.0
       VPVS: null
-      Geobox: (23.0601,34.3852), (23.6039,34.0317), (26.8522,33.6953), (29.1178,34.7188), (29.9628,36.1148), (27.4820,37.5490), (26.4968,37.6732), (21.4060,37.0584), (23.0601,34.3852)
+      Geobox: (25.861, 37.718), (23.928, 37.596), (23.247, 35.639), (23.884, 34.470), (26.696, 34.216), (27.619, 34.867), (28.894, 35.942), (28.630, 36.615), (27.312, 37.666), (25.817, 37.701), (25.861, 37.718)
+
+    - Filename: SSA2py/Velocity_Models/konstantinou.vz
+      Elevation: 3
+      Depth: 90
+      Distance: 350
+      Granularity: 1.0
+      VPVS: null
+      Geobox: (22.434, 39.009), (23.867, 39.108), (24.125, 38.839), (24.323, 38.655), (24.329, 38.530), (24.472, 38.320), (24.537, 37.900), (24.010, 37.557), (23.148, 38.061), (22.846, 38.264), (22.434, 39.002)
+
+    - Filename: SSA2py/Velocity_Models/hasslinger.vz
+      Elevation: 3
+      Depth: 90
+      Distance: 350
+      Granularity: 1.0
+      VPVS: null
+      Geobox: (19.478, 39.884), (21.016, 39.854), (21.599, 38.108), (21.654, 37.788), (21.884, 36.549), (20.335, 36.544), (19.478, 39.884)   
 
     - Filename: SSA2py/Velocity_Models/rigo.vz
       Elevation: 3
-      Depth: 50
-      Distance: 200
+      Depth: 90
+      Distance: 350
       Granularity: 1.0
-      VPVS: 1.73
+      VPVS: null
       Geobox: null
 
   Crustals3D:
@@ -136,7 +152,7 @@ Download Service:
     # - ['FDSNWS', Path, token or null]
     # - ['MSEED', Path, null] (local MSEED file)
     Stream:
-       - ['FDSNWS', 'NOA', null]
+       - [SeedLink, 10.0.0.23:18000, null]
 
 Download Rules:
     # Retrieve channel types based on distance rules
@@ -147,10 +163,9 @@ Download Rules:
     # where loc is the initial location (hypocenter) of the event
     # and only for channel type of HN (Strong motion stations)
     Distance:
-       - [0.0, 5.0, [0, 100, ['HH', 'HN']]]
-       - [5.0, 6.0, [0, 100, ['HN']]]
-       - [6.0, 7.0, [10, 200, ['HN']]]
-       - [7.0, 9.0, [20, 200, ['HN']]]
+       - [0.0, 5.0, [0, 50, ['HH']]]
+       - [5.0, 6.0, [0, 50, ['HH', 'HN']]]
+       - [6.0, 9.0, [20, 100, ['HN']]]
 
     # Data duration window in seconds [before Origin Time, after Origin Time]
     Time: [-50,100]
@@ -183,7 +198,7 @@ Streams:
   # Currently, it can be used for realtime operation (keeps no history).
   # Use an empty list [] if no modules need to be set.
   Quality Control:
-     - ['SNR']
+     - ['SNR', 'TIME']
                  
   # If True resample to the given frequency (Hz) all the traces
   # Recommended [True, 100] 
@@ -218,7 +233,7 @@ Streams:
   # Remove Response if True.
   # Poles/zeros info are needed, so the response removal
   # is possible only if the user provides STATIONXML file.
-  Response: False
+  Response: True
 
                           
   # Physical quantity of all traces. 
@@ -266,7 +281,7 @@ Streams:
   # as 'H' in the Backprojection section. Only for positive data e.g. Envelopes
   # Combination: sqrt( N^2 + E^2).
   # If RT is enabled only RT horizontal is computed.
-  Combine: False
+  Combine: True
  
 
 # Section about the Source-Scanning Settings 
@@ -278,7 +293,7 @@ Backprojection:
 
   # Identify the number of CPUS.
   # If null uses of the CPUS in your system
-  NumCPUS: null  
+  NumCPUS: null 
 
   # The operator can set different grids based on the size
   # of event. Every rule has the form of min. Magnitude, max. Magnitude,
@@ -298,10 +313,10 @@ Backprojection:
 
   Selection:
     # Selected component/s to perform Backprojection
-    Components: ['Z', 'N', 'E'] 
+    Components: ['H', 'E', 'N'] 
 
     # Maximum distance between epicenter and stations to be selected
-    Distance: 150
+    Distance: 100
 
   # Minimum sector requirements to run SSA. 
   # The parameter has the form of: [minSectors, minStations per sector]
@@ -345,7 +360,7 @@ Backprojection:
       - [7.0, 9.0, [-5, 30]]
 
     # Time shift for each step (in sec)
-    TimeShift: 0.1
+    TimeShift: 0.5
 
     # Half length of the moving window
     MovingWindow: [0.15, 0.15]
@@ -369,6 +384,9 @@ Backprojection:
 
     # This will raise the calculated brightness to its N-th root (Check Normalize)
     Npower: 1
+
+    # This will normalize all the results between 0-1.
+    Normalize Results: True
 
 Tests:
     # If True the Array Response Function is performed.
@@ -439,7 +457,7 @@ Plotting:
 Monitor:
   Magnitudetype: MLh # type of magnitude (null for all)
   Range: 540 # check interval in sec
-  Playback: 0 # set sec for past-time run
+  Playback: 100 # set sec for past-time run
   MagnitudeTresh: 4 #Magnitude Threshold
   Historical: false # use this only if Playback is not zero and you want to reproduce the exact scenario
   Geobox: (20.3054,37.2037), (22.4079,33.6323), (27.0569,33.8793), (30.3113,35.8225), (27.4245,41.5998), (24.9779,42.0729), (21.7796,41.8349), (18.6751,40.6285), (20.3054,37.2037) 
