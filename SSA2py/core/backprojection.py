@@ -42,13 +42,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 
 import numba
-from numba import njit, prange, vectorize, cuda, float32, float64, int64, int32
+from numba import njit, prange, vectorize, cuda, float32, float64, int64, int32, jit
 
 numba.config.THREADING_LAYER = 'default'
 
 # import local library
 from SSA2py.core import config
-from SSA2py.core.grid import grid_box, grid_box3D
+from SSA2py.core.grid import grid_box, grid_box3D, grid_points
 from SSA2py.core.basic_f.get_tt import get_tt1d, get_tt3d
 from SSA2py.core.config import timer
 from SSA2py.core.basic_f.other import createDir, write_txt_maxBright
@@ -113,7 +113,7 @@ def backprojection(stream, stations, savedir):
     # backprojection
     # re-arrange the grid (List with x, y, depth)
 
-    if config.gridRules[0][0] == 'box':
+    if config.gridRules[0][0] == 'box' or config.gridRules[0][0]=='points':
         # directory to save
         path_br=createDir(savedir)
 
@@ -242,7 +242,6 @@ def backprojection(stream, stations, savedir):
                max_array[step,2] = config.grid[max_index,1] #Lat.
                max_array[step,3] = config.grid[max_index,2] #Depth
                max_array[step,4] = time[step] #Time
-
                #brightness <= bthre*bmax as NaN
                all_[all_[:,0]<max_array[step,0]*config.cfg['Backprojection']['Settings']['bthre']] = 0
 
@@ -271,7 +270,7 @@ def backprojection(stream, stations, savedir):
 
         return True     
 
-@njit(float32[:](float32[:], float32[:], float32[:,:], float32[:], float32, float32, float32, float32), nogil=True, cache=True)
+@njit(float32[:](float32[:], float32[:], float32[:,:], float32[:], float32, float32, float32, float32))
 def SSA(tt, time, data, rate, maxTT, StaThre, power, type_):
     """
     SSA for CPUS
@@ -322,7 +321,7 @@ def SSA(tt, time, data, rate, maxTT, StaThre, power, type_):
             br[t] = 0
     return br
 
-@njit(float32[:](float32[:], float32[:], float32[:,:], float32[:], float32[:], float32, float32[:], float32, float32, float32, float32), nogil=True, cache=True)
+@njit(float32[:](float32[:], float32[:], float32[:,:], float32[:], float32[:], float32, float32[:], float32, float32, float32, float32))
 def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_):
     """
     SSA with window
@@ -350,7 +349,7 @@ def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_):
                             int(np.around(((_tt_[d])*rate[d]) + (win[1]*rate[d])))])
                 the_sum = 0
                 for s in range(len(dt)):
-                    the_sum = the_sum + (dt[s] * w[s])
+                    the_sum = the_sum + (np.float32(dt[s]) * w[s])
 
                 if type_ == 0 or (type_ == 1 and d==0):
                     br[t] += the_sum/sumW
@@ -503,6 +502,14 @@ def getGrid():
              
                 config.logger.info('Box Grid!')
                 return G
+            if len(grid_type)==2 and grid_type[0]=='points': #Points
+                grid_ = grid_points(grid_type[1])
+                G = np.column_stack((grid_[0], grid_[1], grid_[2]))
+  
+                config.logger.info('Input Points Grid!')
+                return G
+                
+ 
     if char['type']=='3D':       
         #Respect the grid rules from the tt calculation (only Box Grid!)
         grid_ = grid_box3D(grid_type[1], grid_type[2], grid_type[3], grid_type[4], grid_type[5],\

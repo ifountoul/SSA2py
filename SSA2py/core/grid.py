@@ -136,3 +136,33 @@ def grid_box3D(x_side, y_side, z_side1, z_side2, incr, epic, distance):
    x, y = np.vstack([x.ravel(), y.ravel()])
 
    return (x, y, z, posx, posy)
+
+
+def grid_points(file_path):
+    """
+    Read the .txt file with the grid points
+
+    Arguments:
+    ---------
+    file_path: string
+         Path of the .txt file
+    Returns:
+    --------
+    x, y, z: list
+         lists with values from every column.
+
+    """
+    try:
+        with open(file_path, 'r') as file:
+            x_vals, y_vals, z_vals = [], [], []
+            for line in file:
+                x, y, z = line.strip().split()
+                x_vals.append(float(x))
+                y_vals.append(float(y))
+                z_vals.append(float(z))
+            return x_vals, y_vals, z_vals
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+    except ValueError:
+        print(f"Error: Invalid data format in file '{file_path}'.")
+
