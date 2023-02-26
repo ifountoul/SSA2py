@@ -304,6 +304,9 @@ Backprojection:
   # with 50 km x side length (km), 50 km y side length (km) and depths between 0-30 km with grid step
   # to all directions of 1 km. The maximum value in the give box dimensions isNOT reached (+step if you want to reach it)
 
+  # Available is also the type 'points' that give the user the possibility to provide corrdinates in any form and shape for the SSA.
+  # Type 'Points' form: - [7.0, 9.0, ['points', path/to/file]]. The coordinates form in the txt file must be in Lon., Lat., Depth.
+
   # WARNING!: The bigger it gets the grid the computational cost is increased.
   Grid: 
     - [0.0, 5.0, ['box', 50, 50, 0, 20, 1]]
