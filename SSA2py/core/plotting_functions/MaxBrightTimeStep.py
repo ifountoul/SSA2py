@@ -258,7 +258,12 @@ def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stati
     if Test=='MAIN' or Test=='ARF':
         if grid==True:
             # plot the backround grid points
-            lon,lat = np.meshgrid(lon, lat)
+            if config.gridRules[0][0]=='box':
+                lon,lat = np.meshgrid(lon, lat)
+            else:
+                lon = np.array(grid_[:,0])
+                lat = np.array(grid_[:,1])
+
             if config.cfg['Plotting']['Topography/Bathymetry'][0]==True:
                 ax1.scatter(lon, lat, color = 'lime', marker = 'o', s=2, alpha=0.1, transform= ccrs.PlateCarree()) 
             else:

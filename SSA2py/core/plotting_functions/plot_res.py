@@ -19,6 +19,7 @@
 #    along with SSA2py.  If not, see <https://www.gnu.org/licenses/>.
 
 import obspy, os
+from obspy.geodetics.base import gps2dist_azimuth
 
 # local functions
 from SSA2py.core import config
@@ -31,7 +32,7 @@ from SSA2py.core.plotting_functions.Uncertainty_Analysis import Max_Bright_Uncer
 from SSA2py.core.plotting_functions.RecordswithBr import wf_
 from SSA2py.core.plotting_functions.ARF import ARFplots
 
-def plot_res_(paths, out_path, Test='MAIN', error_type=None):
+def plot_res_(paths, out_path):
     """
     Plot Results
 
@@ -64,10 +65,15 @@ def plot_res_(paths, out_path, Test='MAIN', error_type=None):
         
         config.logger.info('Building Maximum Brightness Per Time Step Map...')
 
+        if config.gridRules[0][0]=='box':
+            maxgrid=max(config.gridRules[0][1], config.gridRules[0][2])
+        else:
+            maxgrid=max([gps2dist_azimuth(config.org.latitude, config.org.longitude, g[1], g[0])[0]/1000 for g in config.grid])
+
         MaxBrightTimeStep_(paths[0], [], config.org.latitude, config.org.longitude, config.org.depth/1000, config.org.time,\
-                          config.inv, stations_used, startTime=0, endTime=25, minBrig=None, maxBrig=None,\
+                          config.inv, stations_used, startTime=0, endTime=65, minBrig=None, maxBrig=None,\
                           min_lon=None, min_lat=None, max_lon=None, max_lat=None, min_depth=None, max_depth=None,\
-                          points_size=9, maxgrid=max(config.gridRules[0][1], config.gridRules[0][2]),\
+                          points_size=9, maxgrid=maxgrid,\
                           faults=True, grid=True, hypo=True, colormap='rainbow', topo=True,\
                           meridian=True, info_box=True, Test='MAIN',autoselect=False,\
                           filename='MaximumBrightness', outpath=out_path, fileformat='png', dpi=400)
