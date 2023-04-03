@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import datetime, sys, argparse, yaml, logging, shutil, copy
+import datetime, sys, argparse, yaml, logging, shutil, copy, multiprocessing
 from argparse import RawTextHelpFormatter
 import textwrap, os, glob, json, sys, copy
 from obspy import Catalog, Stream, read_events, read
@@ -19,13 +19,6 @@ from SSA2py.core.modules.mute import mute_traces
 # plotting
 from SSA2py.core.plotting_functions.plot_res import plot_res_, plot_Boot
 from SSA2py.core.plotting_functions.FigureDown import FigDown
-
-from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
-import warnings
-
-warnings.simplefilter('ignore', category=NumbaDeprecationWarning)
-warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
-
 
 __copyright__ = "🄯 "+str(datetime.datetime.utcnow().year)+", Institute of Geodynamics - National Observatory of Athens"
 __credits__ = ["Ioannis Fountoulakis (ifountoul@noa.gr), Christos Evangelidis (cevan@noa.gr)"]
@@ -125,6 +118,9 @@ config.warns()
 # read the configuration file
 _cfg=config.read(args.config)
 
+# Number of cores
+if _cfg['Backprojection']['NumCPUS']==None:
+    _cfg['Backprojection']['NumCPUS']=multiprocessing.cpu_count()
 
 # download from github layers for the plots
 if args.download:
@@ -179,6 +175,18 @@ if args.event: # get info of the event from FDSN of Local input
 for evt in cat:
     config.init(evt, _cfg)
     config.cfg = config.read(args.config)
+
+    # Do we use ESM servise?
+    for service in config.cfg['Download Service']['Stream']:
+        if service[1] == 'https://esm-db.eu':
+            config.eventid_ESM = str(evt.resource_id).split('event_id=')[1]
+
+    # Check that the event was not executed before
+    if args.real_time:
+        if config.exists==True:
+            # Events exists
+            config.logger.info('Event has been already executed move to the next event in catalog...')
+            continue
 
     try:
         # get waveforms and inventory if not repeat
