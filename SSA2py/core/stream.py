@@ -72,7 +72,6 @@ def stream_process():
     config.raw = True #The data are still raw for now keep that to know
 
     if config.cfg['Streams']['Response']==True:    
-        try:
             config.logger.info('Remove response from traces')
             with multiprocessing.Pool(processes=int(config.cfg['Backprojection']['NumCPUS'])) as p:
                 res=p.map(correct, config.st)
@@ -80,9 +79,6 @@ def stream_process():
             config.st = Stream([tr for tr in res])
             del res
             config.raw = False
-        except Exception as e:
-            config.logger.warning('Unable to remove response from traces. Continue in raw format.')
-            pass
 
     #Trim data to selected range, in case of larger range pad
     config.st = Stream([tr.trim(UTCDateTime(origin) + float(config.cfg['Streams']['Duration'][0]),\
@@ -334,14 +330,17 @@ def correct(tr):
     """
     #Remove responce
     tr.detrend('linear')
-    if config.cfg['Streams']['Response']==True:
-        tr.remove_response(output='ACC',
-                           pre_filt=(0.001, 0.005, 45, 50), # bandpass frqs (Hz)
-                           zero_mean=True, # detrend(demean)
-                           taper=True, # cos taper from f1 to f2 and from f3 to f4
-                           taper_fraction=0.05, # percentage of tapering
-                           water_level=60
-                           )
+    try:
+        if config.cfg['Streams']['Response']==True:
+            tr.remove_response(output='ACC',
+                               pre_filt=(0.001, 0.005, 45, 50), # bandpass frqs (Hz)
+                               zero_mean=True, # detrend(demean)
+                               taper=True, # cos taper from f1 to f2 and from f3 to f4
+                               taper_fraction=0.05, # percentage of tapering
+                               water_level=60
+                               )
+    except:
+         config.logger.warning('Unable to remove response for trace: ' + tr.stats.network+'.'+tr.stats.station+'.'+tr.stats.channel)
     return tr
 
 def commonMetric(st, raw, q):
@@ -365,6 +364,10 @@ def commonMetric(st, raw, q):
     #Just to avoid problems with integration
     st.detrend('demean')
     st.detrend('linear');
+    st.taper(max_percentage=0.05, type='hann',)
+ 
+    # Avoid drifting
+    st.filter('bandpass', freqmin=0.3, freqmax=20.0) 
 
     if raw==False: #Data in ACC physical quantity (without response)
         if q=='VEL':
