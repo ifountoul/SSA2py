@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with SSA2py.  If not, see <https://www.gnu.org/licenses/>.
 
-import operator, logging, math, yaml, obspy, time, os
+import operator, logging, math, yaml, obspy, time, os, urllib.request, shutil, zipfile
 import numpy as np
 
 from obspy import read_inventory, Inventory, Stream
@@ -68,13 +68,21 @@ def getInventory():
                     fdsnws = Client(service[1], eida_token=service[2], timeout=500)
                     config.logger.info('Connecting to FDSNWS host ' +service[1])
 
-                # download inventory from host based on config rules
-                _inv=fdsnws.get_stations(starttime=starttime,
-                     endtime=endtime, latitude=config.org.latitude, \
-                     longitude=config.org.longitude, \
-                     minradius=kilometers2degrees(mindist), \
-                     maxradius=kilometers2degrees(maxdist), \
-                     level='response')
+                if service[1]=='https://esm-db.eu':
+                    _inv=fdsnws.get_stations(starttime=starttime,
+                         endtime=endtime, latitude=config.org.latitude, \
+                         longitude=config.org.longitude, \
+                         minradius=kilometers2degrees(mindist), \
+                         maxradius=kilometers2degrees(maxdist), \
+                         level='channel')
+                else:
+                    # download inventory from host based on config rules
+                    _inv=fdsnws.get_stations(starttime=starttime,
+                         endtime=endtime, latitude=config.org.latitude, \
+                         longitude=config.org.longitude, \
+                         minradius=kilometers2degrees(mindist), \
+                         maxradius=kilometers2degrees(maxdist), \
+                         level='response')
             except Exception as e:
                 if e.__class__.__name__=='FDSNNoDataException':
                     config.logger.info('Could not retrieve inventory from FDSNWS host '+service[1])
@@ -181,7 +189,92 @@ def getInventory():
                     pass
             config.inv = _inv_    
     
-            
+def do_ESM_request(_inv, eventid, _dir_, pt, dt, token=None):
+    """
+    Do data request from ESM.
+
+    Input:
+    ------
+
+    _inv: Obspy inventory object
+        Inventory with stations information.
+    eventid: str
+        Event id (ESM or USGS or EMSC)
+    _dir_: path
+        Temporal directory to save requests
+    pt: str
+        Prosessing type (CV:data converted to cm/s^2 or MP:manually processed or AP: automatically processed)
+    dt: str 
+        Data type (ACC: acceleration, in cm/s^2, VEL: velocity, in cm/s, DISP: displacement, in cm)
+    token: path 
+        Path to token .txt file
+
+    Output:
+    -------
+
+    st: Obspy stream Object
+        Stream with waveforms
+
+    """
+
+    # Create directory to save
+    if not os.path.exists(os.path.join(_dir_, 'tmp')):
+        os.makedirs(os.path.join(_dir_, 'tmp'))
+    else:
+        shutil.rmtree(os.path.join(_dir_, 'tmp'))
+        os.makedirs(os.path.join(_dir_, 'tmp'))
+
+    #Start to built the request
+    if eventid.startswith('us'):
+        cat = 'USGS'
+    if eventid.startswith('INT') or eventid.startswith('EMSC'):
+        cat = 'ESM'
+    if eventid.startswith('20'):
+        cat = 'EMSC'
+
+    # Data format
+    _format_ = 'mseed'
+
+    # Per station
+    for net in _inv:
+        for sta in net:
+            station = sta.code
+
+            if token==None:
+                req = 'https://esm-db.eu/esmws/eventdata/1/query?eventid={}&catalog={}&station={}&format={}&processing-type={}&data-type={}'\
+                      .format(eventid, cat, station, _format_, pt, dt)
+
+                #Do the request
+                urllib.request.urlretrieve(req, os.path.join(_dir_, 'tmp', station+'_query.zip'))
+            else:
+                #Need testing....
+                req = 'https://esm-db.eu/esmws/eventdata/1/query?eventid={}&catalog={}&station={}&format={}&processing-type={}&data-type={}'\
+                      .format(eventid, cat, station, _format_, pt, dt)
+
+                curl = 'curl -X POST -F '
+                mess = """"message={}" """.format(token)
+                req_ = """"{}" """.format(req)
+                end = '-o ' + os.path.join(_dir_, 'tmp', station+'_query.zip')
+
+                reqc = curl + mess + req_ + end
+                os.system(reqc)
+    # Unzip the files
+    for _zip_ in os.listdir(os.path.join(_dir_, 'tmp')):
+        try:
+            with zipfile.ZipFile(os.path.join(_dir_, 'tmp', _zip_), 'r') as zip_ref:
+                zip_ref.extractall(os.path.join(_dir_, 'tmp'))
+        except:
+            pass
+
+    # Read the mseed files
+    try:
+        st = read(os.path.join(_dir_, 'tmp', '*mseed'))
+    except:
+        st = Stream([])
+
+    # Remove the temporal directory
+    shutil.rmtree(os.path.join(_dir_, 'tmp'))
+    return st
                          
 def getWaveforms():
     """
@@ -248,11 +341,17 @@ def getWaveforms():
                 if service[1] in ["iris-federator", "eida-routing"]:
                     fdsnws = RoutingClient(service[1], timeout=500)
                     config.logger.info('Connecting to ' +service[1])
+                    config.st+=fdsnws.get_waveforms_bulk(streams)
+                elif service[1] == 'https://esm-db.eu':
+                    ESM_st=do_ESM_request(config.inv, config.eventid_ESM, config.eventdir, 'MP', 'ACC', service[2])
+                    for tr in ESM_st: #to m/s2
+                        tr.data=tr.data/100
+                    config.st+=ESM_st 
                 else:
                     fdsnws = Client(service[1], eida_token=service[2], timeout=500)
                     config.logger.info('Connecting to FDSNWS host ' +service[1])
-                # make one request for all streams
-                config.st+=fdsnws.get_waveforms_bulk(streams)
+                    # make one request for all streams
+                    config.st+=fdsnws.get_waveforms_bulk(streams)
             except Exception as e:
                 if e.__class__.__name__=='FDSNNoDataException':
                     config.logger.info('Could not retrieve data from FDSNWS host '+service[1])

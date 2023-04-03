@@ -85,13 +85,19 @@ def getFDSNWSCatalog(cfg, log, minMag=None, starttime=None, endtime=None, eventi
         log.info('Requesting event with ID: ' + eventid)
 
     try:
-        return fdsnws.get_events(eventid=eventid or None,
-                            starttime=UTCDateTime(starttime) if starttime else None,
-                            endtime=UTCDateTime(endtime) if endtime else None,
-                            minmagnitude=minMag or None if not eventid else None,
-                            magnitudetype=cfg['Monitor']['Magnitudetype'] or None if not eventid else None,
-                            includeallorigins=True, includeallmagnitudes=True, includearrivals=True,
-                            orderby='time-asc' if not eventid else None)
+        if cfg['Download Service']['Event Info']['Host'] == 'https://esm-db.eu':
+                return fdsnws.get_events(eventid=eventid or None,
+                                         starttime=UTCDateTime(starttime) if starttime else None,
+                                         endtime=UTCDateTime(endtime) if endtime else None,
+                                         minmagnitude=minMag or None if not eventid else None)
+        else:
+                return fdsnws.get_events(eventid=eventid or None,
+                                         starttime=UTCDateTime(starttime) if starttime else None,
+                                         endtime=UTCDateTime(endtime) if endtime else None,
+                                         minmagnitude=minMag or None if not eventid else None,
+                                         magnitudetype=cfg['Monitor']['Magnitudetype'] or None if not eventid else None,
+                                         includeallorigins=True, includeallmagnitudes=True, includearrivals=True,
+                                         orderby='time-asc' if not eventid else None)
 
     except Exception as e:
         if e.__class__.__name__=='FDSNNoDataException':
