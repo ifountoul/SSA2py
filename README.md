@@ -1,18 +1,18 @@
-## SSA2py
+# SSA2py
 
-### What is SSA2py?
+## What is SSA2py?
 
-### Installation & Usage
+## Installation & Usage
 
-### About this repository
+## About this repository
 #### Top-level layout
 
-### Community
+## Community
 
-### License
+## License
 
-### Contribution
+## Contribution
 
-### Contact
+## Contact
 
 
