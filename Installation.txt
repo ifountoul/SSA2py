@@ -1,4 +1,0 @@
-1) Install conda
-2) cd SSA2PY;
-   conda env create -f environment.yaml
-3) conda activate SSA2PY
