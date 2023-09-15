@@ -8,6 +8,13 @@
 
 Welcome to the public repo for SSA2py.
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Python](https://img.shields.io/badge/python-3.10-blue.svg)
+![Repo Size](https://img.shields.io/github/repo-size/Sulstice/global-chem)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Maturity badge - level 2](https://img.shields.io/badge/Maturity-Level%202%20--%20First%20Release-yellowgreen.svg)](https://github.com/tophat/getting-started/blob/master/scorecard.md)
+
+
 ## What is SSA2py?
 
 [SSA2py]() **is an open-source python project that follows the Source-Scanning Algorithm (SSA)**.
