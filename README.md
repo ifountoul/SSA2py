@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="">
+    <img src="logo.jpg" width="400" alt="SSA2py logo">
+  </a>
+</p>
+
 # SSA2py
 
 Welcome to the public repo for SSA2py.
