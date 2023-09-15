@@ -30,11 +30,6 @@ The official documentation is hosted on [Read the Docs]().
 
 To learn more about using SSA2py, follow our [guide here]() or see the [examples]().
 
-## About this repository
-
-#### Top-level layout
-
-
 ## Community
 
 Have questions, comments or feedback? Start a [discussion]().
