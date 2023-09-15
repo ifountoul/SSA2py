@@ -1,0 +1,6 @@
+1) Install conda
+2) cd SSA2PY;
+   conda env create -f environment.yaml
+3) conda activate SSA2PY
+4) python3 SSA2py.py --download
+5) python3 SSA2py.py
