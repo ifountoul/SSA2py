@@ -4,7 +4,7 @@ Welcome to the public monorepo for SSA2py.
 
 ## What is SSA2py?
 
-Learn more at: 
+The official documentation is hosted on Read the Docs.
 
 ## Installation & Usage
 
