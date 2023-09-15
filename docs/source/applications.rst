@@ -1,4 +1,0 @@
-Example Applications
-********************
-
-Coming soon....
