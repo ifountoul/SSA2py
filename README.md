@@ -1,11 +1,18 @@
-## Getting Started
+## SSA2py
 
-Read through our [Contribution Guidelines](CONTRIBUTING.md) before you contribute.
+### What is SSA2py?
 
-## Community Channels
+### Installation & Usage
 
-We are on [Discord](https://the-algorithms.com/discord) and [Gitter](https://gitter.im/TheAlgorithms/community)! Community channels are a great way for you to ask questions and get help. Please join us!
+### About this repository
+#### Top-level layout
 
-## List of Algorithms
+### Community
 
-See our [directory](DIRECTORY.md) for easier navigation and a better overview of the project.
+### License
+
+### Contribution
+
+### Contact
+
+
