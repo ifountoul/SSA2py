@@ -36,7 +36,7 @@ from obspy.core.utcdatetime import UTCDateTime
 
 
 import numba
-from numba import njit, cuda, float32
+from numba import njit, cuda, float32, float64
 
 numba.config.THREADING_LAYER = 'default'
 
@@ -181,7 +181,7 @@ def backprojection(stream, stations, savedir):
 
     # Keep the traces data !
 
-    data = np.array([tr.data for tr in stream], dtype='float32')
+    data = np.round(np.array([tr.data for tr in stream], dtype='float32'),4)
 
     # Get rates !
     
@@ -355,6 +355,8 @@ def SSA(tt, time, data, rate, maxTT, StaThre, power, type_, cor):
 
     """
 
+    MAX_INT = 2**31 - 1 # Mind possible overflow
+
     # Pre-allocate arrays
 
     # Brightness
@@ -385,6 +387,8 @@ def SSA(tt, time, data, rate, maxTT, StaThre, power, type_, cor):
 
         if count_stations>StaThre*data.shape[0]:
             br[t] = ((1/count_stations) * br[t]) ** power
+            if br[t]>=MAX_INT:
+                br[t] = 0
         else:
             br[t] = 0
 
@@ -404,6 +408,8 @@ def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_, 
 
     """
 
+    MAX_INT = 2**31 - 1 # Mind possible overflow
+
     # Pre-allocate the amplitudes array
 
     # Brightness
@@ -419,7 +425,6 @@ def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_, 
         _tt_ = tt + time[t] + cor # theoretical arrival
 
         count_stations = 0
-
         for d in range(data.shape[0]):
 
             if tt[d]<maxTT:
@@ -427,7 +432,6 @@ def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_, 
 
                 dt = np.abs(data[d][int(np.around(((_tt_[d])*rate[d]) - (win[0]*rate[d]))):\
                             int(np.around(((_tt_[d])*rate[d]) + (win[1]*rate[d])))])
-
                 the_sum = 0
 
                 for s in range(len(dt)):
@@ -435,12 +439,12 @@ def SSAWindow(tt, time, data, rate, w, sumW, win, maxTT, StaThre, power, type_, 
 
                 if type_ == 0 or (type_ == 1 and d==0):
                     br[t] += (the_sum/sumW)
-
                 if type_ == 1 and d>0:
                     br[t] = br[t] * (the_sum/sumW)
-
         if count_stations>StaThre*data.shape[0]:
             br[t] = ((1/count_stations) * br[t]) ** power
+            if br[t]>=MAX_INT:
+                br[t] = 0
         else:
             br[t] = 0
     return br

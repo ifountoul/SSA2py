@@ -430,49 +430,47 @@ for evt in cat:
                                  for d in os.listdir(os.path.join(Unpaths[0], 'Detailed_Solutions')):
                                      delete_npy(os.path.join(Unpaths[0], 'Detailed_Solutions', d),[])
 
-            # for each phase do the ARF test
-            if config.cfg['Tests']['Array Response Function'] is True:
+        # for each phase do the ARF test
+        if config.cfg['Tests']['Array Response Function'] is True:
             
-                config.job = 'Array Response Function'
+             config.job = 'Array Response Function'
 
-                old_fi = config.fi
-                old_scan = config.scanningRules[0]
-                old_shift = config.cfg['Backprojection']['Settings']['TimeShift']
-                old_window = config.cfg['Backprojection']['Settings']['MovingWindow']
-                old_type = config.cfg['Streams']['Type']
+             old_fi = config.fi
+             old_scan = config.scanningRules[0]
+             old_shift = config.cfg['Backprojection']['Settings']['TimeShift']
+             old_window = config.cfg['Backprojection']['Settings']['MovingWindow']
+             old_type = config.cfg['Streams']['Type']
 
-                config.fi = []
-                config.scanningRules[0] = [-2,2]
-                config.cfg['Backprojection']['Settings']['TimeShift'] = 0.1
-                config.cfg['Backprojection']['Settings']['MovingWindow'] = [0, 0]
+             config.fi = []
+             config.scanningRules[0] = [-2,2]
+             config.cfg['Backprojection']['Settings']['TimeShift'] = 0.1
+             config.cfg['Backprojection']['Settings']['MovingWindow'] = [0, 0]
 
-                config.cfg['Streams']['Type'] = 'Synthetic Pulses'
+             config.cfg['Streams']['Type'] = 'Synthetic Pulses'
+             config.phase = config.cfg['Backprojection']['Settings']['Phase'][0]
+             getTTtables()
 
-                config.phase = config.cfg['Backprojection']['Settings']['Phase'][0]
-                getTTtables()
+             for comp in config.cfg['Backprojection']['Selection']['Components']:         
 
-                for comp in config.cfg['Backprojection']['Selection']['Components']:         
+                 #MSEED path to use
+                 path = os.path.join(config.eventdir, 'Processed_Data',\
+                                    '{:s}_{:s}_{:s}_{:s}{:s}'.format(old_type,\
+                                     str(float(config.cfg['Streams']['Filter'][0][0])),\
+                                     str(float(config.cfg['Streams']['Filter'][0][1])), comp, '.mseed'))
+                 config.comp = comp
+                 # read the Stream
+                 config.st, config.stations = stream.StreamReady(path)
+                 # call the function
+                 ARF.ARF()
 
-                    #MSEED path to use
-                    path = os.path.join(config.eventdir, 'Processed_Data',\
-                                       '{:s}_{:s}_{:s}_{:s}{:s}'.format(old_type,\
-                                        str(float(config.cfg['Streams']['Filter'][0][0])),\
-                                        str(float(config.cfg['Streams']['Filter'][0][1])), comp, '.mseed'))
-                    config.comp = comp
-                    # read the Stream
-                    config.st, config.stations = stream.StreamReady(path)
+                 if config.cfg['Delete']==True:
+                     _compress_([os.path.join(config.eventdir, 'Results', 'ARF', 'pulses_'+comp, 'Detailed_Solution')])
 
-                    # call the function
-                    ARF.ARF()
-
-                    if config.cfg['Delete']==True:
-                        _compress_([os.path.join(config.eventdir, 'Results', 'ARF', 'pulses_'+comp, 'Detailed_Solution')])
-
-                config.fi = old_fi
-                config.scanningRules[0] = old_scan
-                config.cfg['Backprojection']['Settings']['TimeShift'] = old_shift
-                config.cfg['Backprojection']['Settings']['MovingWindow'] = old_window
-                config.cfg['Streams']['Type'] = old_type
+             config.fi = old_fi
+             config.scanningRules[0] = old_scan
+             config.cfg['Backprojection']['Settings']['TimeShift'] = old_shift
+             config.cfg['Backprojection']['Settings']['MovingWindow'] = old_window
+             config.cfg['Streams']['Type'] = old_type
                 
 
         # Compress the results
