@@ -41,9 +41,6 @@ To learn more about using SSA2py, follow our [guide here]() or see the [examples
 
 Have questions, comments or feedback? Start a [discussion]().
 
-## License
-*GNU GENERAL PUBLIC LICENSE Version 3*
-
 ## Contribution
 
 Found a bug? Please submit an [issue]().
@@ -74,3 +71,6 @@ Thanks to [H.F.R.I](https://www.elidek.gr/en/homepage/) for funding this effort!
 
 Thanks to [NOA](https://www.noa.gr/en/) for providing the infrastructure to develop this program!
 
+## Copyright and license
+
+Code released under the GNU [GENERAL PUBLIC LICENSE Version 3](https://github.com/ifountoul/SSA2py-Ghost/blob/master/LICENSE)
