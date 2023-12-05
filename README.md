@@ -56,8 +56,6 @@ Found a bug? Please submit an [issue]().
 
 **Christos Evangelidis**
 
-- https://members.noa.gr/cevan/en/
-
 :email: cevan@noa.gr
 
 
