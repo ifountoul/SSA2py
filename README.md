@@ -55,7 +55,7 @@ Find us on X [@ifountoul]() or :email: ifountoul@noa.gr, cevan@noa.gr.
 ## Thanks 
 
 <a href="https://www.elidek.gr/en/homepage/">
-  <img src="https://www.elidek.gr/wp-content/themes/elidek/images/elidek_logo_en.png" alt="H.F.R.I" width="210" height="70">
+  <img src="https://www.elidek.gr/wp-content/themes/elidek/images/elidek_logo_en.png" alt="H.F.R.I" width="250" height="70">
 </a>
 
 Thanks to [H.F.R.I](https://www.elidek.gr/en/homepage/) for funding this effort!
