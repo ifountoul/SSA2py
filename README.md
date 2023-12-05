@@ -52,3 +52,11 @@ Found a bug? Please submit an [issue]().
 
 Find us on X [@ifountoul]() at or email ifountoul@noa.gr, cevan@noa.gr.
 
+## Thanks 
+
+<a href="https://www.elidek.gr/en/homepage/">
+  <img src="https://www.elidek.gr/wp-content/themes/elidek/images/elidek_logo_en.png" alt="H.F.R.I" width="192" height="42">
+</a>
+
+Thanks to [H.F.R.I](https://www.elidek.gr/en/homepage/) for funding this effort!
+
