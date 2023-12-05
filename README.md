@@ -48,9 +48,16 @@ Have questions, comments or feedback? Start a [discussion]().
 
 Found a bug? Please submit an [issue]().
 
-## Contact
+## Creators
 
-Find us on X [@ifountoul]() or :email: ifountoul@noa.gr, cevan@noa.gr.
+**Ioannis Fountoulakis**
+
+:email: ifountoul@noa.gr
+
+**Christos Evangelidis**
+
+:email: cevan@noa.gr
+
 
 ## Thanks 
 
