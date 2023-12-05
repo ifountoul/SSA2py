@@ -1,0 +1,458 @@
+
+Version: 1.0
+
+# Set the workspace where all the calculations will be performed and archived.
+# For every seismic event a separate directory is created, named with the event's origin time.
+
+Events Dir: SSA2py/events
+
+# 'Traveltimes' is a configuration section in SSA2py dedicated to settings related to traveltime tables (tttables) calculation. 
+# SSA2py version 1.0 supports both 1-D and 3-D models for tttables calculation.
+# In the 'Crustals1D' subsection, users can define 1-D models by specifying:
+# 1) The relative or absolute path of the crustal model ('Filename').
+# 2) The elevation, depth, distance, and step/granularity for the tttables ('Elevation'/'Depth'/'Distance'/'Granularity').
+# 3) The 'Geobox,' which is a polygon defining the region where a crustal model will be used if the initial hypocenter's location is within it. 
+# If 'Geobox' is set to null, then this crustal model will be used as the default if no other model is found.
+# Only one crustal model with a null 'Geobox' can be defined in the 'Crustals1D' subsection.
+
+# In the 'Crustals3D' subsection, users must define 3-D models by specifying:
+# 1) The relative or absolute paths of the VP and VS crustal models ('Filename VP', 'Filename VS').
+# 2) The depth, distance (from the epicenter), and step/granularity for the tttables ('Depth'/'Distance'/'Granularity').
+# 3) The 'Geobox,' similarly to the 'Crustals1D' subsection.
+
+# The 'VPVS' parameter can be used when users want to calculate tttables using the VpVs value and ignore the Vs column in the given velocity model (use null to deactivate this part).
+# The 'Priority' parameter indicates the crustal models' priority. 
+# If set to '1D' the program starts searching for the best-suited model (based on 'Geobox') in the 'Crustals1D' subsection. 
+# If set to '3D' it searches in the 'Crustals3D' subsection.
+# The 'Phase' parameter determines the phases in the tttables.
+# The 'Package' parameter specifies the method used for the calculation, with options: 'FMM' - Fast Marching Method | 'TAUP' - Taup | 'NNLOC' - Eikonal finite-difference.
+# The 'Save' parameter defines the path to export the tttables.
+# In the 'System' section, under 'Nonlinloc,' users must define the path for the NonNinLoc executables in case of using 'NNLOC' as the calculation method.
+# The input crustal models are in a simple format (Depth VP values VS values), which can be understood by referring to the crustal models in the 'Velocity_Models' directory.
+
+Traveltimes:
+  Crustals1D:
+    - Filename: 
+      Elevation: 3
+      Depth: 90
+      Distance: 350
+      Granularity: 1.0
+      VPVS: null
+      Geobox: null
+
+  Crustals3D:
+    - Filename VP: 
+      Filename VS:
+      Depth: 80        
+      Distance: 200    
+      Granularity: 1.0 
+      VPVS: 1.73      
+      Geobox: null    
+
+  Priority: '1D'    # '1D'/'3D'. 
+  Phase: ['P', 'S'] # P, S or both
+  Package: 'FMM'    # NNLOC/TAUP/FMM 
+  Save: SSA2py/tttables
+
+System:
+  NonNinLoc:
+
+# Section dedicated to provide SSA2py with event information, data and metadata.
+
+Download Service:
+
+    # The purpose of the 'Event Info' is to supply SSA2py with seismic event/s information, 
+    # which can be used for real-time or past-time operations. 
+    # Presently, it supports using only one FDSNWS-event service.
+    # For full manual input formats this parameter is not used.
+
+    Event Info:
+       Host: ''
+
+    # The Inventory section pertains to the characteristics of the stations, such as poles-zeros, digitizer's gain, etc. 
+    # You can utilize different types of retrieval services, including FDSNWS-station ('FDSNWS'), XML ('StationXML'), and YAML ('StationYAML') formats. 
+    # Multiple services can be employed, and the stations' metadata will be merged in FIFO order. Keep in mind that using more services may result in longer retrieval times.
+    # If XML or YAML files are used, it is essential to ensure that the metadata remains up-to-date and relevant to the seismic events or real-time scenarios, 
+    # which may require regular updates through a cron-job.
+    # In case you want to use federator please provide "eida-routing" or "iris-federator" as second parameter.
+
+    #Available options:
+    #- ['FDSNWS', URL, token or null]
+    #- ['StationXML', Path, null] (local XML)
+    #- ['StationYAML', Path, null] (local YAML type file)
+
+    # 'StationYAML' file example is provided for the Parkfield case.
+
+    Inventory: 
+       - ['StationYAML', '', null]
+       
+    # The Stream sub-section pertains to the waveforms data. 
+    # It supports various types of retrieval services, including FDSNWS-dataselect, SeedLink, SDS archive path, and local MSEED. 
+    # You have the flexibility to use multiple services, and the seismic waveforms will be merged in the order they are provided (FIFO order).
+    # For real-time operations, a SeedLink service is recommended, although it may take more time compared to other services. 
+    # The time required for processing increases with the number of services added.
+    # In case you want to use federator please provide "eida-routing" or "iris-federator" as
+    # second parameter.
+
+    #Available options:
+    # - ['SeedLink', URL, null] (SeedLink host for real-time cases)
+    # - ['SDS', Path, null] (SDS Structure)
+    # - ['FDSNWS', Path, token or null]
+    # - ['MSEED', Path, null] (local MSEED file)
+
+    Stream:
+       - ['MSEED', '', null]
+
+# Section dedicated to download rules.
+
+Download Rules:
+
+    # To obtain channel types based on distance rules, you define rules with the format: 
+    # [minMag, maxMag, [minDist (in kilometers), maxDist (in kilometers), [and allowed channels]]].
+
+    # Example: [5.0, 6.0, [0, 100, ['HN']]]
+
+    # For example, if 5.1>= Mag <=6.0, SSA2py will 
+    # retrieve stations within a range of: 0 km <= loc<= 100 km 
+    # where loc is the initial location (hypocenter) of the event
+    # and only for channel type of 'HN' (Strong motion stations).
+    # Channel type 'HH' denotes broadband stations.
+
+    # You can add multiple values, and the rule that is first satisfied will be selected.
+
+    Distance:
+       - [0.0, 9.0, [0, 150, ['HN']]]
+
+    # Data duration window in seconds [before Origin Time, after Origin Time]
+
+    Time: [-10,100]
+
+    # Accepted types of component.
+    # Note that SSA2py uses only E,N,Z components, so for that reason rotation
+    # based on metadata will be performed. In case of metadata (e.g 'StationYAML') without information about the
+    # orientation, only E,N,Z components will kept and user is responsible for the orientation.  
+
+    Components: ['Z23', 'Z12', '123', 'ZNE']
+
+    # Stations Selection. 
+    # If the 'Stationslist' parameter is 'True' ([True, .txt file Path]) SSA2py uses given information from a text file
+    # in order to keep or discard seismic stations. Accepted format in the .txt file is 
+    # network.station (e.g. HL.KLV.HH) and 'True'/'False'. Example: HL.KLV.HH False --> Discard station
+    #                                                   Example: HL.KLV.HH True  --> Keep station 
+    # If the station is not in the .txt file, the station is discared.
+
+    Stationslist: [False, './stations.txt']
+
+
+# The 'Streams' section is all about the processing of the data, that will be used as input to SSA2py
+
+Streams:
+
+  # Time duration of the trace (in seconds) before and after the origin time (if smaller pad with zeros)
+
+  Duration: [-20, 100]
+                       
+  # The modules help to choose good quality waveforms.
+  # Possible inputs are: 
+  # 1) SNR: Real-time signal to noise ratio (based on module's threshold)
+  # 2) TIME: Real-time check for accuracy in instruments timing (based on module's threshold)
+  # 3) CLIP: Real-time check for clipped waveforms (based on module's threshold)
+
+  # Currently, it can be used for realtime operation (keeps no history).
+  # Use an empty list [] if no modules need to be set.
+  # Based on your preference add or remove modules ['SNR', 'TIME', 'CLIP']
+
+  Quality Control: []
+
+  # If True resample to the given frequency (Hz) all the traces.
+  # Example: [True, 100] --> Resample to 100 Hz
+
+  Resample: [True, 200]
+
+  # Bandpass filter for the processed traces e.g. '2-8': Lower limit 2, high 8 Hz (>1)
+  # The user can specify more than one filter. Use [0,0] for no filtering.
+
+  Filter:
+    - [2, 8]
+
+  # Convert wavefroms to: 
+  #               'ENV': Envelopes
+  #               'OBS': Observed waveforms, 
+  #               'ABS' : Absolute part of the Observed (>1)
+  #               'STALTA': STALTA method
+  #               'KURT': Kurtosis method
+  # Recommended for SSA is to use positive data.
+
+  # 'STALTA' and 'KURT' methods are added for future location purposes.
+
+  Type: 'ENV'
+
+  # For 'STALTA' and 'KURT' methods
+  # In case of 'STALTA' - [STA, LTA]
+  #            'KURT'   - [window]
+  # If empty default values will be used.
+
+  Type Parameters: [0.5]
+
+
+  # If True Rotate to the Radial-Transverse system.
+
+  Rotate: False
+
+  # Remove Response if True.
+  # Poles/zeros info are needed, so the response removal is possible only if the user provides STATIONXML file.
+
+  Response: False
+
+
+  # Physical quantity of all traces. 
+  # Choose between 'ACC': Acceleration, 'DISP': Displacement, 'VEL': Velocity
+  # This process is available also for the raw records by integration/differentiation.
+  # Create a uniform dataset concerning the physical quantity.  
+  # Warning! A pre-filter may be necessary.
+
+  Pre Filter: [0.005, 45]
+  Quantity: 'ACC'
+
+  # Normalize the traces
+  # Input 1: 
+  #       0     means linear normalization with 2 standard deviation of absolute amplitude being 1
+  #      =1-99  means the largest amplitude is set to this number
+  #     >=101   means the average of a number of the largest amplitudes (the exact
+  #             number is set as navemax in the include file) is set to be (normal_type - 100)
+  # Input 2:
+  #      Root factor = 1 (usually)
+
+  # Example [True, 1, 1] = Normalize of absolute amplitude being 1 and Root factor 1
+
+  Normalize: [True, 1, 1]
+
+  # Static time shifts
+  # With the time shifts we correct records for variations in the near-surface, timing issues, inaccuracies of the velocity model etc.
+
+  # Format: [True/False, Input 1, Input 2 (if applies)]
+  # Input 1:
+  #        1  means time shifts using the P phase. 
+  #           P picked arrival from external source is needed.
+  #        2  means time shifts using the S phase.
+  #           S picked arrival from external source is needed.
+  #        3  means time shifts using directly the shift time.
+  #           Shift time from external source is needed.        
+  # Input 2:
+  #        path for text file with manual picks.
+  #        Format of the file
+  #        NET.STA UTCDatetime (P arrival) UTCDatetime (S arrival) (For Options 1,2)
+  #        NET.STA float (For Option 3)   
+  # Example [True, 0] = shifts using the P phase with theoretical traveltimes arrivals
+
+  Corrections: [True, 2, '']
+
+
+  # Combine horizontal components (E and N).
+  # If True the E and N components will be merged together (or R-T).
+  # The new component will be named as H (Horizontal) and can be used
+  # as 'H' in the Backprojection section. Only for positive data e.g. Envelopes
+  # Combination: sqrt( N^2 + E^2).
+  # If RT is enabled only RT horizontal is computed.
+
+  Combine: False
+
+ 
+
+# Section about the Source-Scanning Settings 
+
+Backprojection:
+ 
+  # If True the SSA will be performed in the GPU. Otherwise the SSA procedure will be hosted by the CPUS.
+ 
+  GPU: False 
+
+  # Identify the number of CPUS. If null uses all of the CPUS in your system.  
+
+  NumCPUS: 8
+
+  # The user can set different grids based on the size of event. 
+  # Every rule has the form of min. Magnitude, max. Magnitude, type of Grid ('box', 'points'), x side length (km), y side length (km), z side starting depth (km), 
+  # z side ending depth (km), step (km).
+
+  # Example [0.0, 5.0, ['box', 50, 50, 0, 30, 1]]
+  # For a seismic event with magnitude 0.0>=mag<=5.0, create box grid around the given hypocenter
+  # with 50 km x side length (km), 50 km y side length (km) and depths between 0-30 km with grid step
+  # to all directions of 1 km. The maximum value in the give box dimensions isNOT reached (+step if you want to reach it)
+
+  # Available is also the type 'points' that give the user the possibility to provide coordinates in any form and shape for the SSA.
+  # Type 'Points' form: - [7.0, 9.0, ['points', path/to/file]]. The coordinates form in the txt file must be in Lon., Lat., Depth.
+
+  Grid: 
+     - [0.0, 9.0, ['box', 80, 80, 0, 50, 1]]
+
+  Selection:
+
+    # Selected component/s to perform Backprojection.
+
+    # Available 'N': North
+    #           'E': East
+    #           'Z': Vertical
+    #           'H': Horizontal
+    #           'R': Radial
+    #           'T': Transverse
+
+    Components: ['N'] 
+
+    # Maximum distance between epicenter and stations to be selected
+
+    Distance: 20
+
+  # To run SSA, there are minimum sector requirements specified as [minSectors, minStations per sector]. 
+  # SSA defines four sectors of 90 degrees each around the given hypocenter. 
+  # The first number (minSectors) represents the minimum number of sectors where at least minStations need to be found. 
+  # This condition is imposed to ensure that SSA executions have a sufficiently strong azimuthal distribution.
+
+  Sectors: [2, 1]
+
+  Settings:
+
+    # P or S phase for the BP calculation 
+    # (Must be consistent with the pre-calculated tttables)
+
+    Phase: 'S' 
+
+    # Only traveltimes <= TTmax will be used in brightness calculation.
+    # Otherwise if the traveltime between station-grid point exceeds this value
+    # the station will be ignored.
+
+    TTmax: 100
+
+    # Scanning time before and after the origin time based on the magnitude of the event. 
+    # Format: [minMag, maxMag, [startScan, endScan]]
+    # For example in the case [5.0, 6.0, [-1, 15]] for a seismic event with magnitude
+    # 5.0>=Mag<=6.0, SSA will pe performed -1 seconds before to 15 seconds after the origin time.
+
+    ScanningTime: 
+      - [0.0, 9.0, [0, 10]]
+
+    # Time shift for each step (in sec - until two decimal places)
+
+    TimeShift: 0.1
+
+    # Half length of the moving window
+
+    MovingWindow: [0.1, 0.1]
+
+    # Brightness type. 
+    # Options:
+    #        0 means average of sum between stations (Honn Kao and Shao-Ju Shan, 2007)
+    #        1 means average of multiplication between stations (Modification based on Roessler et. al, 2010)
+
+    BrType: 0
+
+    # Only points calculated from (StaThre)% of total stations are kept put 0-1.0 (0-100%)
+    # Otherwise grid will be ignored.
+
+    StaThre: 0.9
+
+    # Only points with brightness >= bthre*bmax will be outputted
+
+    bthre: 0.0
+
+    # Gaussian weighting = 0 | Equal weighting = 1
+    # Weighting of the Half length moving window
+
+    Weight: 0
+
+    # This will raise the calculated brightness to its N-th root (Check Normalize)
+
+    Npower: 1
+
+    # This will normalize all the results between 0-1.
+
+    Normalize Results: False
+
+# Uncertainty tests
+
+Tests:
+
+    # If True the Array Response Function is performed.
+    # Note that the test create Ricker pulses, based on the
+    # stations distributions and re-calculates the SSA.
+
+    Array Response Function: True
+    
+    # Jackknife Resampling
+
+    Jackknife: False
+
+    # Bootstrap test [True/False, number of repeats, percentage of stations]
+    # The Bootstrap test receives as inputs the number of resampling repeats
+    # and the percentage of stations taken into account in the reasmpling procedure
+    # from each 90 degree sector. For example in case: [False, 40, 50] the program will choose
+    # randomly the 50% of stations in each sector and will repeat the test 40 times. Each time
+    # the algorithm will select a random number of the 50% excluded stations, these stations 
+    # will be restored back to the initial dataset and the SSA will be performed. 
+   
+    Bootstrap: [False, 10, 50] 
+
+# Due to the significant number of binary files that the test 
+# export you have the option to delete the results and compress the main solution.
+
+Delete: True
+
+Plotting:
+
+    # Path to download basic shapefiles for the plots.
+    # Execute SSA2py.py --download
+
+    Save Layers: SSA2py/figure_layers
+
+    # If True provide a Topography for the plots .nc format only!
+    
+    Topography/Bathymetry: [False, '']
+
+    # If True draw all the analysis plots including:
+    #    Stations distribution (atlas)
+    #    Maximum Brightness per Timestep (Maximum_Brightness)
+    #    Records Section (Records_section)
+    #    Records Plot with samples used for each Brightness spot (Waveforms) 
+    #    Uncertainty analysis plots for the Jackknife or Bootstrap    
+
+    Plots: True
+   
+    # Animation for the SSA results.
+    # Keep in mind that the animation function is relatively slow!
+
+    Animation: False
+
+# FDSNWS-event monitor service checks for events and triggers 
+# the automatic SSA procedure. 
+# Range: Time window of events search and retrieval
+# Time window starts from Range to NOW -Playback -SSA scanning time.
+# You can set Playback if you want to re-produce past time.
+# Set Playback to 0, for real-time procedure.
+# Set Historical to false if you want to retrieve the best 
+# hypocenter origin estimation, otherwise, it will re-produce 
+# the origins as it would happen in real-time scenario (usefull for playback)
+# The Geobox restricts SSA calculations to events inside this region. 
+# You can use null to ingore area limits.
+
+Monitor:
+  Magnitudetype: MLh # type of magnitude (null for all)
+  Range: 500 # check interval in sec
+  Playback: 0 # set sec for past-time run
+  MagnitudeTresh: 4 #Magnitude Threshold
+  Historical: false # use this only if Playback is not zero and you want to reproduce the exact scenario
+  Geobox: (20.3054,37.2037), (22.4079,33.6323), (27.0569,33.8793), (30.3113,35.8225), (27.4245,41.5998), (24.9779,42.0729), (21.7796,41.8349), (18.6751,40.6285), (20.3054,37.2037) 
+  # null indicates not bounds
+
+  # In the quality section the user can specify uncertainty
+  # limits (in Time, Depth, Latitude, Longitude, and Magnitude)
+  # in order to trigger the SSA2py. Useful, in order to control 
+  # the quality of the hypocentral solution that starts the SSA computation.
+  # If Timeout passes and we don't have better quality uncertainties the SSA
+  # starts anyway. This must comply with Range value (not more than it, <=Range).
+  Quality: # uncertainty
+    Time: 1
+    Depth: 10 # km
+    Latitude: 15
+    Longitude: 15
+    Magnitude: 0.3
+    Timeout: 540 # must get associated with the Range value (<=Range)
