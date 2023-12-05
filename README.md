@@ -16,7 +16,7 @@
 </p>
 
 
-# SSA2py 1.0.0
+# SSA2py 1.0
 
 Welcome to the public repo for SSA2py.
 
