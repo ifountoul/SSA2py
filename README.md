@@ -24,9 +24,13 @@ The official documentation is hosted on [Read the Docs]().
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Maturity badge - level 2](https://img.shields.io/badge/Maturity-Level%202%20--%20First%20Release-yellowgreen.svg)](https://github.com/tophat/getting-started/blob/master/scorecard.md)
 
+## Table of contents
 
-## Installation & Usage
-### Fast installation and usage
+- [Quick start](#quick-start)
+
+
+
+## Quick Start
 - `git clone https://github.com/ifountoul/SSA2py.git`
 - `cd SSA2py`
 - `conda env create -f environment.yml`
