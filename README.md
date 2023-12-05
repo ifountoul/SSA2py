@@ -62,7 +62,7 @@ Thanks to [H.F.R.I](https://www.elidek.gr/en/homepage/) for funding this effort!
 
 
 <a href="https://www.noa.gr/en/">
-  <img src="https://www.noa.gr/wp-content/uploads/2019/12/noa_logo.svg" alt="NOA" width="100" height="100">
+  <img src="https://www.noa.gr/wp-content/uploads/2019/12/noa_logo.svg" alt="NOA" width="120" height="120">
 </a>
 
 Thanks to [NOA](https://www.noa.gr/en/) for providing the infrastructure to develop this program!
