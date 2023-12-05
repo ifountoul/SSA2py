@@ -27,7 +27,11 @@ The official documentation is hosted on [Read the Docs]().
 ## Table of contents
 
 - [Quick start](#quick-start)
-
+- [Community](#community)
+- [Contribution](#contribution)
+- [Creators](#creators)
+- [Thanks](#thanks)
+- [Copyright and license](#copyright-and-license)
 
 
 ## Quick Start
