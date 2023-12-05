@@ -50,7 +50,7 @@ Found a bug? Please submit an [issue]().
 
 ## Contact
 
-Find us on X [@ifountoul]() at or email ifountoul@noa.gr, cevan@noa.gr.
+Find us on X [@ifountoul]() or :email: ifountoul@noa.gr, cevan@noa.gr.
 
 ## Thanks 
 
