@@ -694,7 +694,7 @@ def check(cfg, logger):
 
    if bool(cfg['Streams']['Quality Control']):
        if isinstance(cfg['Streams']['Quality Control'], list):
-                for i in cfg['Streams']['Quality Control'][0]:
+                for i in cfg['Streams']['Quality Control']:
                    if i not in ['SNR', 'CLIP', 'TIME']:
                       logger.error("Streams/Quality Control Problem")
                       sys.exit() 

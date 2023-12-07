@@ -12,6 +12,7 @@ Events Dir: SSA2py/events
 # 1) The relative or absolute path of the crustal model ('Filename').
 # 2) The elevation, depth, distance, and step/granularity for the tttables ('Elevation'/'Depth'/'Distance'/'Granularity').
 # 3) The 'Geobox,' which is a polygon defining the region where a crustal model will be used if the initial hypocenter's location is within it. 
+# Example (19.478, 39.884), (21.016, 39.854), (21.599, 38.108), (21.654, 37.788), (21.884, 36.549), (20.335, 36.544), (19.478, 39.884)
 # If 'Geobox' is set to null, then this crustal model will be used as the default if no other model is found.
 # Only one crustal model with a null 'Geobox' can be defined in the 'Crustals1D' subsection.
 
@@ -32,55 +33,7 @@ Events Dir: SSA2py/events
 
 Traveltimes:
   Crustals1D:
-    - Filename: SSA2py/Velocity_Models/Greece/rigo.vz
-      Elevation: 3
-      Depth: 90
-      Distance: 250
-      Granularity: 1.0
-      VPVS: null
-      Geobox: (21.0828, 37.9269), (23.2251, 37.9269), (23.2251, 38.5310), (21.0828, 38.5310), (21.0828, 37.9269)
-
-    - Filename: SSA2py/Velocity_Models/Greece/drakatos.vz
-      Elevation: 3      
-      Depth: 90            
-      Distance: 250     
-      Granularity: 1.0 
-      VPVS: null
-      Geobox: (22.9340, 37.3352), (24.0106, 37.3352), (24.0106, 38.0076), (22.9340, 38.0076), (22.9340, 37.3352)
-
-    - Filename: SSA2py/Velocity_Models/Greece/karagianniN.vz
-      Elevation: 3
-      Depth: 90
-      Distance: 350
-      Granularity: 1.0
-      VPVS: null
-      Geobox: (22.999, 39.719), (25.411, 40.384), (26.026, 39.440), (26.691, 39.453), (26.724, 38.638), (27.147, 37.775), (26.488, 37.339), (25.460, 37.357), (24.614, 37.501), (24.708, 38.207), (22.999, 39.719)
-
-    - Filename: SSA2py/Velocity_Models/Greece/karagianniS.vz
-      Elevation: 3
-      Depth: 90
-      Distance: 350
-      Granularity: 1.0
-      VPVS: null
-      Geobox: (25.861, 37.718), (23.928, 37.596), (23.247, 35.639), (23.884, 34.470), (26.696, 34.216), (27.619, 34.867), (28.894, 35.942), (28.630, 36.615), (27.312, 37.666), (25.817, 37.701), (25.861, 37.718)
-
-    - Filename: SSA2py/Velocity_Models/Greece/konstantinou.vz
-      Elevation: 3
-      Depth: 90
-      Distance: 350
-      Granularity: 1.0
-      VPVS: null
-      Geobox: (22.434, 39.009), (23.867, 39.108), (24.125, 38.839), (24.323, 38.655), (24.329, 38.530), (24.472, 38.320), (24.537, 37.900), (24.010, 37.557), (23.148, 38.061), (22.846, 38.264), (22.434, 39.002)
-
-    - Filename: SSA2py/Velocity_Models/Greece/hasslinger.vz
-      Elevation: 3
-      Depth: 90
-      Distance: 350
-      Granularity: 1.0
-      VPVS: null
-      Geobox: (19.478, 39.884), (21.016, 39.854), (21.599, 38.108), (21.654, 37.788), (21.884, 36.549), (20.335, 36.544), (19.478, 39.884)   
-
-    - Filename: SSA2py/Velocity_Models/Greece/rigo.vz
+    - Filename: 'path/to/file'
       Elevation: 3
       Depth: 90
       Distance: 350

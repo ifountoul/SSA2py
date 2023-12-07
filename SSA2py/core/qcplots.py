@@ -37,8 +37,6 @@ from obspy.geodetics.base import gps2dist_azimuth
 
 from SSA2py.core import config
 
-matplotlib.use('agg')
-
 def SNRPlot(path, streams, traces, res):
     """
     Plot SNR results

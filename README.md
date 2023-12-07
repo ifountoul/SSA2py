@@ -56,6 +56,7 @@ The official documentation is hosted on [Read the Docs]().
 
 ### Prerequisites
 - Install conda
+- To use GPU install the cudatoolkit throught anaconda. Please check the CUDA and NVIDIA driver versions.
 
 To learn more about using SSA2py, follow our [guide here]() or see the [examples]().
 
