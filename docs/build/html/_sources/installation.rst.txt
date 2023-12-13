@@ -49,7 +49,7 @@ Installation
 
 3. Activate conda environment.
 
-   ``conda activate SSA2py``
+   ``conda activate SSA2PY``
 
 4. Create the default events (Events Dir) and traveltimes (Traveltimes/save) directories
    as defined in the default config file.  
