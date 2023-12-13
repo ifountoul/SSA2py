@@ -50,7 +50,7 @@ The official documentation is hosted on [Read the Docs]().
 - `git clone https://github.com/ifountoul/SSA2py.git`
 - `cd SSA2py`
 - `conda env create -f environment.yml`
-- `conda activate SSA2py`
+- `conda activate SSA2PY`
 - `python3 SSA2py.py --download`
 - `python3 SSA2py.py` **(Everything OK? Ready to go!)**
 
@@ -85,8 +85,8 @@ Found a bug? Please submit an [issue]().
   <img src="https://www.elidek.gr/wp-content/themes/elidek/images/elidek_logo_en.png" alt="H.F.R.I" width="310" height="90">
 </a>
 
-Thanks to [H.F.R.I](https://www.elidek.gr/en/homepage/) for funding this effort!
-
+The research was supported by the Hellenic Foundation for Research and Innovation ([H.F.R.I.](https://www.elidek.gr/en/homepage/)) under the 
+“First Call for H.F.R.I. Research Projects to support Faculty members and Researchers and the procurement of high-cost research equipment grant” (SIREN, Project Number: 910).
 
 <a href="https://www.noa.gr/en/">
   <img src="https://www.noa.gr/wp-content/uploads/2019/12/noa_logo.svg" alt="NOA" width="110" height="110">
