@@ -62,11 +62,11 @@ To learn more about using SSA2py, follow our [guide here]() or see the [examples
 
 ## Community
 
-Have questions, comments or feedback? Start a [discussion]().
+Have questions, comments or feedback? Start a [discussion](https://github.com/ifountoul/SSA2py/discussions).
 
 ## Contribution
 
-Found a bug? Please submit an [issue]().
+Found a bug? Please submit an [issue](https://github.com/ifountoul/SSA2py/issues).
 
 ## Creators
 
