@@ -26,7 +26,7 @@ Welcome to the public repo for SSA2py.
 It provides interconnection with FDSN Compliant Web Services and it is adapted to run in GPU and CPU multiprocessing architectures. 
 The aim of SSA2py is to provide rapid and accurate calculations of SSA method in near-realtime conditions.
 
-The official documentation is hosted on [Read the Docs]().
+The official documentation is hosted on [Read the Docs](https://ssa2py.readthedocs.io/en/latest/).
 
 ## Status
 
@@ -58,7 +58,7 @@ The official documentation is hosted on [Read the Docs]().
 - Install conda
 - To use GPU install the cudatoolkit throught anaconda. Please check the CUDA and NVIDIA driver versions.
 
-To learn more about using SSA2py, follow our [guide here]() or see the [examples]().
+To learn more about using SSA2py, follow our [guide here](https://ssa2py.readthedocs.io/en/latest/) or see the [examples](https://ssa2py.readthedocs.io/en/latest/applications.html).
 
 ## Community
 
