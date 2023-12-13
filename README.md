@@ -9,10 +9,10 @@
 <p align="center">
    Unleashing Source Scanning at the Speed of Python
   <br>
-  <a href=""><strong>Explore SSA2py docs »</strong></a>
+  <a href="https://ssa2py.readthedocs.io/en/latest/"><strong>Explore SSA2py docs »</strong></a>
   <br>
   <br>
-  <a href="">Report bug</a>
+  <a href="https://github.com/ifountoul/SSA2py/issues">Report bug</a>
 </p>
 
 
