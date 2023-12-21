@@ -108,7 +108,7 @@ def exec_corr(stations, f):
                 synth_arr = config.org.time + synth_arr
                 # correction (the observed arrival time of the phase minus the calculated traveltime from the hypocentre)
                 index = keys_list.index(sta)
-                cor[index] = synth_arr - arr
+                cor[index] = arr - synth_arr
 
                 config.logger.info("{} {} {} {}".format("Station", sta,\
                                    "correction:", str(round(cor[index],2))+' sec'))
@@ -133,7 +133,7 @@ def exec_corr(stations, f):
 
                 # correction (the observed arrival time of the phase minus the calculated traveltime from the hypocentre)
                 index = keys_list.index(sta)
-                cor[index] = synth_arr - arr
+                cor[index] = arr - synth_arr
 
                 config.logger.info("{} {} {} {}".format("Station", sta,\
                                    "correction:", str(round(cor[index],2))+' sec'))
