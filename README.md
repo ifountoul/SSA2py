@@ -66,9 +66,9 @@ To learn more about using SSA2py, follow our [guide here](https://ssa2py.readthe
 
 ## Supported Platforms
 
-Our software is tested on the following platforms:
+Our software is developed on Ubuntu 22.04.2 LTS and tested on the following platforms:
 - Linux (Ubuntu 22.04 LTS)
-- Windows (Windows 11 Pro - WSL)
+- Windows (Windows 11 Pro - WSL 2)
 
 **Note:** SSA2py is not vigorously tested on macOS at the moment. Contributions and feedback related to macOS testing are welcome.
 
