@@ -39,6 +39,7 @@ The official documentation is hosted on [Read the Docs](https://ssa2py.readthedo
 ## Table of contents
 
 - [Quick start](#quick-start)
+- [Systems](#systems)
 - [Community](#community)
 - [Contribution](#contribution)
 - [Creators](#creators)
@@ -51,14 +52,19 @@ The official documentation is hosted on [Read the Docs](https://ssa2py.readthedo
 - `cd SSA2py`
 - `conda env create -f environment.yml`
 - `conda activate SSA2PY`
+-  Create the events directory (Events Dir) and the traveltimes directory (Traveltimes/Save) declared in the configuration file
 - `python3 SSA2py.py --download`
 - `python3 SSA2py.py` **(Everything OK? Ready to go!)**
 
 ### Prerequisites
 - Install conda
 - To use GPU install the cudatoolkit throught anaconda. Please check the CUDA and NVIDIA driver versions.
+- Make sure that you have conda-forge in your channels (`conda config --show channels`). You can add it by executing `conda config --add channels conda-forge`.
+- If you install SSA2py on a brand new system install the C and C++ compilers before installing Anaconda.
 
 To learn more about using SSA2py, follow our [guide here](https://ssa2py.readthedocs.io/en/latest/) or see the [examples](https://ssa2py.readthedocs.io/en/latest/applications.html).
+
+## Systems 
 
 ## Community
 
