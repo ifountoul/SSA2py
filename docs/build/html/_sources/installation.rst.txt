@@ -21,7 +21,7 @@ Hardware Requirements
 
 - The software is developed in a manner to be able to be deployed from PC/Laptop to 
   High-Performance Servers with or without a GPU device.
-- Currently, it supports only Linux OS. Tested on Ubuntu 22.04.2 LTS.
+- Tested on Ubuntu 22.04.2 LTS and Windows 11 Pro - WSL 2.
 - The GPU device must support CUDA GPU programming standard.
 
 Prerequisites
@@ -30,6 +30,10 @@ Prerequisites
 - Install **conda** (`here <https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html>`_). Tested on 4.12.0.
 
 - (*Optional*) Install **NonNinLoc** (`here <http://alomax.free.fr/nlloc/>`_). For traveltime tables calculation.
+
+- Make sure that you have conda-forge in your channels (``conda config --show channels``). You can add it by executing ``conda config --add channels conda-forge``.
+
+- If you install SSA2py on a brand new system install the C and C++ compilers before installing Anaconda. 
 
 .. note:: In order to succesfully compile NonNinLoc you will need a C compiler, such as gcc.
           

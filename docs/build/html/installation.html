@@ -100,7 +100,7 @@
 <ul class="simple">
 <li><p>The software is developed in a manner to be able to be deployed from PC/Laptop to
 High-Performance Servers with or without a GPU device.</p></li>
-<li><p>Currently, it supports only Linux OS. Tested on Ubuntu 22.04.2 LTS.</p></li>
+<li><p>Tested on Ubuntu 22.04.2 LTS and Windows 11 Pro - WSL 2.</p></li>
 <li><p>The GPU device must support CUDA GPU programming standard.</p></li>
 </ul>
 </section>
@@ -109,6 +109,8 @@ High-Performance Servers with or without a GPU device.</p></li>
 <ul class="simple">
 <li><p>Install <strong>conda</strong> (<a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html">here</a>). Tested on 4.12.0.</p></li>
 <li><p>(<em>Optional</em>) Install <strong>NonNinLoc</strong> (<a class="reference external" href="http://alomax.free.fr/nlloc/">here</a>). For traveltime tables calculation.</p></li>
+<li><p>Make sure that you have conda-forge in your channels (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--show</span> <span class="pre">channels</span></code>). You can add it by executing <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--add</span> <span class="pre">channels</span> <span class="pre">conda-forge</span></code>.</p></li>
+<li><p>If you install SSA2py on a brand new system install the C and C++ compilers before installing Anaconda.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
