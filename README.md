@@ -28,6 +28,8 @@ The aim of SSA2py is to provide rapid and accurate calculations of SSA method in
 
 The official documentation is hosted on [Read the Docs](https://ssa2py.readthedocs.io/en/latest/).
 
+The SSA2py Publication in [SRL](https://pubs.geoscienceworld.org/ssa/srl/article-abstract/doi/10.1785/0220230335/637097/SSA2py-A-High-Performance-Python-Implementation-of?redirectedFrom=fulltext).
+
 ## Status
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -89,6 +91,19 @@ Found a bug? Please submit an [issue](https://github.com/ifountoul/SSA2py/issues
 **Christos Evangelidis**
 
 :email: cevan@noa.gr
+
+## Cite us!
+
+If you used SSA2py in your research, please use the following BibTeX entry:
+
+`@article{10.1785/0220230335,
+    author = {Fountoulakis, Ioannis and Evangelidis, Christos P.},
+    title = "{SSA2py: A High‐Performance Python Implementation of the Source‐Scanning Algorithm for Spatiotemporal Seismic Source Imaging}",
+    journal = {Seismological Research Letters},
+    year = {2024},
+    issn = {0895-0695},
+    doi = {10.1785/0220230335},
+    url = {https://doi.org/10.1785/0220230335}}`
 
 
 ## Thanks 
