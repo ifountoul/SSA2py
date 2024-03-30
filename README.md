@@ -96,15 +96,17 @@ Found a bug? Please submit an [issue](https://github.com/ifountoul/SSA2py/issues
 
 If you used SSA2py in your research, please use the following BibTeX entry:
 
-`@article{10.1785/0220230335,
+```
+@article{10.1785/0220230335,
     author = {Fountoulakis, Ioannis and Evangelidis, Christos P.},
     title = "{SSA2py: A High‐Performance Python Implementation of the Source‐Scanning Algorithm for Spatiotemporal Seismic Source Imaging}",
     journal = {Seismological Research Letters},
     year = {2024},
     issn = {0895-0695},
     doi = {10.1785/0220230335},
-    url = {https://doi.org/10.1785/0220230335}}`
-
+    url = {https://doi.org/10.1785/0220230335}
+}`
+```
 
 ## Thanks 
 
